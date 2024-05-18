@@ -76,7 +76,7 @@ Test-Suite Parser
   type: detailed-0.9
   test-module: ParserTest
   build-depends: base ^>=4.17.2.1, HUnit, Cabal
-  other-modules: Parser Tests
+  other-modules: Parser Tests Utils
   hs-source-dirs: test app
   default-language: Haskell2010
 
