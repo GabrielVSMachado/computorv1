@@ -1,7 +1,7 @@
 module ParserTest (tests) where
 
 import Distribution.TestSuite
-import Parser (splitByEq, validateLine)
+import Parser (validateLine)
 import qualified Tests as T
 
 testEmptyString
@@ -16,17 +16,10 @@ testNoDegreeStringWithoutEq
   | validateLine "6 * X^0" = Pass
   | otherwise = Fail "6 * X^0 has a invalid char"
 
-testValueSplitedByEq
-  | r == ("2 * X^0 + 3 * X^1", "4 * X^0") = Pass
-  | otherwise = Fail "Not Splited Right"
-  where
-    r = splitByEq "2 * X^0 + 3 * X^1 = 4 * X^0"
-
 tests :: IO [Test]
 tests = do
   return
     [ T.test "testEmptyString" testEmptyString,
       T.test "testCompleteString" testCompleteString,
-      T.test "testNoDegreeStringWithoutEq" testNoDegreeStringWithoutEq,
-      T.test "testValueSplitedByEq" testValueSplitedByEq
+      T.test "testNoDegreeStringWithoutEq" testNoDegreeStringWithoutEq
     ]

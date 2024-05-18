@@ -4,27 +4,19 @@ import Distribution.TestSuite
 import qualified Tests as T
 import qualified Utils as Ut
 
-testEmptyString
-  | Ut.trim "" == "" = Pass
-  | otherwise = Fail "Error on empty strings"
+testRmSpaces
+  | Ut.trimStrings (Ut.splitByEq "2 * X^0 + 3 * X^1 = 4 * X^0")
+      == ["2 * X^0 + 3 * X^1", "4 * X^0"] =
+      Pass
+  | otherwise = Fail (show $ Ut.trimStrings (Ut.splitByEq "2 * X^0 + 3 * X^1 = 4 * X^0"))
 
-testComplete
-  | Ut.trim "    Hello World     " == "Hello World" = Pass
-  | otherwise = Fail "testComplete"
-
-testStart
-  | Ut.trim "    H" == "H" = Pass
-  | otherwise = Fail "testStart"
-
-testEnd
-  | Ut.trim "H     " == "H" = Pass
-  | otherwise = Fail "testEnd"
+testSplitPolinomial
+  | Ut.splitByEq "2 * X^0 + 3 * X^1 = 4 * X^0" == ["2 * X^0 + 3 * X^1 ", " 4 * X^0"] = Pass
+  | otherwise = Fail (show $ Ut.splitByEq "2 * X^0 + 3 * X^1 = 4 * X^0")
 
 tests :: IO [Test]
 tests = do
   return
-    [ T.test "testEmptyString" testEmptyString,
-      T.test "testStart" testStart,
-      T.test "testEnd" testEnd,
-      T.test "testComplete" testComplete
+    [ T.test "testSplitPolinomial" testSplitPolinomial,
+      T.test "testRmSpaces" testRmSpaces
     ]

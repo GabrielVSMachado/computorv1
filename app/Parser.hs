@@ -1,6 +1,4 @@
-module Parser (validateLine, splitByEq) where
-
-import Utils (trimDSTuple)
+module Parser (validateLine) where
 
 isAllowedChar :: Char -> Bool
 isAllowedChar x
@@ -14,10 +12,3 @@ isAllowedChar x
 validateLine :: String -> Bool
 validateLine "" = False
 validateLine xs = all isAllowedChar xs
-
-splitByEq :: String -> (String, String)
-splitByEq xs = case splitedByEq of
-  (_, "") -> trimDSTuple splitedByEq
-  (ys, _ : zs) -> trimDSTuple (ys, zs)
-  where
-    splitedByEq = span (/= '=') xs
