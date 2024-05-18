@@ -1,9 +1,15 @@
-import Parser (validateLine)
-import qualified Test.HUnit as UT
+module Tests (test) where
 
-testEmptyString = UT.TestCase (UT.assertEqual "wrong EmptyString" (validateLine "") False)
+import Distribution.TestSuite
 
-tests = UT.TestList [UT.TestLabel "EmptyString" testEmptyString]
-
-main = do
-  UT.runTestTT tests
+test :: String -> Result -> Test
+test name result = Test t
+  where
+    t =
+      TestInstance
+        { run = return (Finished result),
+          name = name,
+          tags = [],
+          options = [],
+          setOption = \_ _ -> Right t
+        }

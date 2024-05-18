@@ -9,7 +9,7 @@ clean:
 re: clean run
 
 test:
-	cabal run tests
+	cabal test
 
 docker/build:
 	docker build -t $(NAME):latest .

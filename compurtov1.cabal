@@ -58,7 +58,7 @@ executable compurtov1
     main-is:          Main.hs
 
     -- Modules included in this executable, other than Main.
-    other-modules: Parser
+    other-modules: Parser PolynomialTypes Utils
 
     -- LANGUAGE extensions used by modules in this package.
     -- other-extensions:
@@ -72,10 +72,18 @@ executable compurtov1
     -- Base language which the package is written in.
     default-language: Haskell2010
 
-executable tests
-  type: exitcode-stdio-1.0
-  main-is: Tests.hs
-  other-modules: Parser
-  build-depends: base ^>=4.17.2.1, HUnit
+Test-Suite Parser
+  type: detailed-0.9
+  test-module: ParserTest
+  build-depends: base ^>=4.17.2.1, HUnit, Cabal
+  other-modules: Parser Tests
+  hs-source-dirs: test app
+  default-language: Haskell2010
+
+Test-Suite Utils
+  type: detailed-0.9
+  test-module: UtilsTest
+  build-depends: base ^>=4.17.2.1, HUnit, Cabal
+  other-modules: Utils Tests
   hs-source-dirs: test app
   default-language: Haskell2010
