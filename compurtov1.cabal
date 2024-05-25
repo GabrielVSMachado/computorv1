@@ -23,6 +23,7 @@ library source
   exposed-modules:
     Parser
     Utils
+    PolynomialTypes
 
   hs-source-dirs: src
 

@@ -13,7 +13,7 @@ testCompleteString
   | otherwise = Fail "5 * X^0 + 4 * X^1 - 9.3 * X^2 = 1 * X^0 has a invalid char"
 
 testNoDegreeStringWithoutEq
-  | validateLine "6 * X^0" = Pass
+  | validateLine "6 * X^0 = 0" = Pass
   | otherwise = Fail "6 * X^0 has a invalid char"
 
 tests :: IO [Test]

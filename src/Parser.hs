@@ -11,4 +11,6 @@ isAllowedChar x
 
 validateLine :: String -> Bool
 validateLine "" = False
-validateLine xs = all isAllowedChar xs
+validateLine xs
+  | '=' `notElem` xs = False
+  | otherwise = all isAllowedChar xs

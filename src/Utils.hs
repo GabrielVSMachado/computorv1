@@ -1,4 +1,4 @@
-module Utils (splitByEq, trimStrings) where
+module Utils (split, trimStrings, quickSort) where
 
 import Data.Foldable (Foldable (foldr'))
 
@@ -20,8 +20,12 @@ split c xs =
       zs = drop (length ys + 1) xs
    in ys : split c zs
 
-splitByEq :: String -> [String]
-splitByEq = split '='
-
 trimStrings :: [String] -> [String]
 trimStrings = foldr' (\x acc -> trim x : acc) []
+
+quickSort :: (Ord a) => [a] -> [a]
+quickSort [] = []
+quickSort (x : xs) =
+  let lower = filter (<= x) xs
+      greater = filter (> x) xs
+   in quickSort lower ++ [x] ++ quickSort greater
