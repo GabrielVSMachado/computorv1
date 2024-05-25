@@ -1,9 +1,15 @@
 FROM haskell:9.4.8-slim
 
-WORKDIR /computorv1
+WORKDIR computorv1
 
-COPY . .
+RUN adduser computorv1 &&\
+  chown computorv1:computorv1 -R /computorv1
 
-RUN cabal v2-install --lib HUnit
+COPY --chown=computorv1:computorv1 . .
+
+User computorv1
+
+RUN cabal update
 
 ENTRYPOINT [ "make" ]
+CMD ["run"]
