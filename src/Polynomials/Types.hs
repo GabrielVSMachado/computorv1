@@ -1,4 +1,4 @@
-module PolynomialTypes (Parcel (Parcel), polynomialParse) where
+module Polynomials.Types (Polynomial, polynomialParse) where
 
 import Text.Read (readMaybe)
 import Utils (split, trimStrings)
