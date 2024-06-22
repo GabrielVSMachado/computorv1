@@ -1,4 +1,4 @@
-module Polynomials.Arithmetic () where
+module Polynomials.Arithmetic (add) where
 
 import Data.List (transpose)
 import Polynomials.Types (Polynomial)

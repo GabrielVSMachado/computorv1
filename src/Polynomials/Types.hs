@@ -11,50 +11,35 @@ data Parcel = Parcel Degree Constant deriving (Show)
 
 type Polynomial = [(Int, Float)]
 
-degreeParser :: String -> Degree
-degreeParser s
-  | s `elem` commonDegreePattern = Just (read (drop 2 s) :: Int)
-  | otherwise = Nothing
-  where
-    commonDegreePattern = ["X^" ++ [y] | y <- ['0' .. '9']]
-
 sortParcelString :: String -> (String, String)
 sortParcelString input
   | 'X' `elem` head values = (last values, head values)
   | otherwise = (head values, last values)
-  where
-    values = trimStrings $ split '*' input
-
--- TODO: Parse a full polinomyal like '5 * X^0 + 4 * X^1 - 9.3 * X^2';
+ where
+  values = trimStrings $ split '*' input
 
 instance Read Parcel where
   readsPrec _ input =
     let (first, second) = sortParcelString input
         constant = readMaybe first :: Constant
-        degree = degreeParser second
+        degree = readMaybe (drop 2 second) :: Degree
      in [(Parcel degree constant, "")]
 
 fromParcel :: Parcel -> (Int, Float)
 fromParcel (Parcel (Just x) (Just y)) = (x, y)
 fromParcel (Parcel Nothing (Just x)) = (0, x)
-fromParcel _ = error "Invalid polynomial"
+fromParcel _ = errorWithoutStackTrace "Invalid polynomial"
 
-
-parcelString :: String -> String
-parcelString [] = []
-parcelString _all@(x : xs)
-  | x == '-' = x : parcel xs
-  | x == '+' = ' ' : parcel xs
-  | otherwise = parcel _all
-  where
-    parcel = takeWhile (`notElem` "+-")
-
-parcels :: String -> [String]
+parcels :: [String] -> [String]
 parcels [] = []
-parcels xs = parcel : parcels rest
-  where
-    parcel = parcelString xs
-    rest = drop (length parcel) xs
+parcels ("+" : x : y : z : tokens) = unwords [x, y, z] : parcels tokens
+parcels (w : x : y : "-" : tokens) = unwords [w, x, y] : parcels ("-" : tokens)
+parcels (w : x : y : "+" : tokens) = unwords [w, x, y] : parcels tokens
+parcels (w : x : y : z : tokens) = unwords [w, x, y, z] : parcels tokens
+parcels (w : x : y : tokens) = unwords [w, x, y] : parcels tokens
+parcels _ = errorWithoutStackTrace "Invalid Polynomial"
 
-polynomialParse :: String -> Polynomial
+-- TODO: Make a function which takes a string or a list of strings and output a valid input to parcels function
+
+polynomialParse :: [String] -> Polynomial
 polynomialParse = map (fromParcel . \x -> read x :: Parcel) . parcels
