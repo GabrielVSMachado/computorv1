@@ -1,7 +1,8 @@
-module Polynomials.Types (Polynomial, polynomialParse) where
+module Polynomials.Types (Polynomial, polynomialParse, isAllowedDegree) where
 
+import Data.List (intersperse)
 import Text.Read (readMaybe)
-import Utils (split, trimStrings)
+import Utils (quickSort, split, trimStrings)
 
 type Degree = Maybe Int
 
@@ -32,14 +33,22 @@ fromParcel _ = errorWithoutStackTrace "Invalid polynomial"
 
 parcels :: [String] -> [String]
 parcels [] = []
-parcels ("+" : x : y : z : tokens) = unwords [x, y, z] : parcels tokens
-parcels (w : x : y : "-" : tokens) = unwords [w, x, y] : parcels ("-" : tokens)
-parcels (w : x : y : "+" : tokens) = unwords [w, x, y] : parcels tokens
-parcels (w : x : y : z : tokens) = unwords [w, x, y, z] : parcels tokens
-parcels (w : x : y : tokens) = unwords [w, x, y] : parcels tokens
-parcels _ = errorWithoutStackTrace "Invalid Polynomial"
+parcels ("-" : v : x : "X" : "^" : z : tokens) = unwords ["-", v, x, "X^", z] : parcels tokens
+parcels ("X" : "^" : x : w : "-" : z : tokens) = unwords ["X^", x, w, "-", z] : parcels tokens
+parcels ("+" : "X" : "^" : x : "*" : z : tokens) = unwords ["X^", x, "*", z] : parcels tokens
+parcels ("+" : v : "*" : "X" : "^" : z : tokens) = unwords [v, "*", "X^", z] : parcels tokens
+parcels (v : "*" : "X" : "^" : z : tokens) = unwords [v, "*", "X^", z] : parcels tokens
+parcels xs = errorWithoutStackTrace ("Invalid Polynomial, the wrong part is: " ++ unwords xs)
 
--- TODO: Make a function which takes a string or a list of strings and output a valid input to parcels function
+-- TODO: code the function intersperse in module Utils
 
-polynomialParse :: [String] -> Polynomial
-polynomialParse = map (fromParcel . \x -> read x :: Parcel) . parcels
+polynomialParse :: String -> Polynomial
+polynomialParse = map (fromParcel . \x -> read x :: Parcel) . parcels . words . intersperse ' '
+
+isAllowedDegree :: Polynomial -> Bool
+isAllowedDegree px
+  | degree > 2 = errorWithoutStackTrace (show degree ++ " isn't supported by this project")
+  | otherwise = True
+ where
+  whichDegree = fst . last . quickSort
+  degree = whichDegree px
