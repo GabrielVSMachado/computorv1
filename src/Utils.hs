@@ -1,4 +1,4 @@
-module Utils (split, trimStrings, quickSort) where
+module Utils (split, trimStrings, quickSort, intersperseBySpaceExcptNumber) where
 
 import Data.Foldable (Foldable (foldr'))
 
@@ -29,3 +29,12 @@ quickSort (x : xs) =
   let lower = filter (<= x) xs
       greater = filter (> x) xs
    in quickSort lower ++ [x] ++ quickSort greater
+
+intersperseBySpaceExcptNumber :: String -> String
+intersperseBySpaceExcptNumber [] = []
+intersperseBySpaceExcptNumber [x] = [x]
+intersperseBySpaceExcptNumber (x : xs)
+  | x `elem` ['0' .. '9'] =  (x: fst numbers) ++ ' ' : intersperseBySpaceExcptNumber (snd numbers)
+  | otherwise = x : ' ' : intersperseBySpaceExcptNumber xs
+  where
+    numbers = span (\z -> z == '.' || z `elem` ['0'..'9']) xs

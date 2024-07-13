@@ -44,7 +44,7 @@ executable Compurtov1
     default-language: Haskell2010
 
 common test-settings
-  build-depends: base ^>=4.17.2.1, HUnit, Cabal, source
+  build-depends: base ^>=4.17.2.1, Cabal, source
   other-modules: Tests
   hs-source-dirs: test
   default-language: Haskell2010
