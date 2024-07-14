@@ -31,11 +31,10 @@ linearRoot a b = (-b) / a
 quadraticRoots :: Float -> Float -> Float -> [Float]
 quadraticRoots a b c
   | delta < 0 = []
-  | delta == 0 = [root1 delta]
-  | otherwise = quickSort [root2 delta, root1 delta]
+  | delta == 0 = [root (sqrt delta)]
+  | otherwise = quickSort [root (-sqrt delta), root (sqrt delta)]
  where
-  root1 dlt = zeroWithoutNegative $ (-b + sqrt dlt) / (2 * a)
-  root2 dlt = zeroWithoutNegative $ (-b - sqrt dlt) / (2 * a)
+  root dlt = zeroWithoutNegative $ (-b + dlt) / (2 * a)
   zeroWithoutNegative r = case r of -0.0 -> 0.0; _ -> r
   delta = b ** 2 - 4 * a * c
 
