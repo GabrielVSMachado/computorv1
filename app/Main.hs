@@ -1,16 +1,18 @@
 module Main where
 
 import Parser (validateLine)
+import Polynomials.Arithmetic (addSymetric, roots)
 import Polynomials.Types (polynomialParse)
-import Utils ( split )
+import Utils (split, quickSort)
 
 main :: IO ()
 main = do
+  putStrLn "Insert the polynomial equation: "
   line <- getLine
-  if not $ validateLine line
+  if validateLine line
     then
-      putStrLn "Invalid polynomial equation form"
+      let polynomials = map polynomialParse (split '=' line)
+       in let results = roots $ quickSort (addSymetric (head polynomials) (last polynomials))
+           in putStrLn results
     else
-        let polynomials = (Utils.split '=' line) in
-        print (polynomialParse (last polynomials))
-        -- print (add (head polynomials) (last polynomials), polynomials)
+      errorWithoutStackTrace "Invalid char in polynomial"

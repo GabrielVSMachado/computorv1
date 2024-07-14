@@ -32,6 +32,7 @@ fromParcel _ = errorWithoutStackTrace "Invalid polynomial"
 
 parcels :: [String] -> [String]
 parcels [] = []
+parcels ["0"] = ["0"]
 parcels ("-" : v : "*" : "X" : "^" : z : tokens) = unwords ["-", v, "*", "X^", z] : parcels tokens
 parcels ("X" : "^" : x : "*" : "-" : z : tokens) = unwords ["X^", x, "*", "-", z] : parcels tokens
 parcels ("+" : "X" : "^" : x : "*" : z : tokens) = unwords ["X^", x, "*", z] : parcels tokens

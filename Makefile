@@ -1,7 +1,7 @@
 NAME="compurtov"
 
 run:
-	cabal run
+	cabal run -g --verbose=0
 
 clean:
 	cabal clean
@@ -9,7 +9,7 @@ clean:
 re: clean run
 
 test:
-	cabal test -g
+	cabal test -g --verbose=1
 
 docker/build:
 	docker build -t $(NAME):latest .

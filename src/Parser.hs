@@ -5,13 +5,12 @@ isAllowedChar x
   | x `elem` validChars = True
   | x `elem` numbersAsChar = True
   | otherwise = False
-  where
-    validChars = ['X', '+', '*', '-', '^', ' ', '=', '.']
-    numbersAsChar = ['0' .. '9']
+ where
+  validChars = ['X', '+', '*', '-', '^', ' ', '=', '.']
+  numbersAsChar = ['0' .. '9']
 
 validateLine :: String -> Bool
-validateLine "" = False
+validateLine "" = errorWithoutStackTrace "Input must be a valid Polynomial"
 validateLine xs
-  | '=' `notElem` xs = False
-  | length [x | x <- xs, x == '='] > 1 = False
+  | '=' `notElem` xs = errorWithoutStackTrace "Equal signal must be present and the other side must be 0 or a valid Polynomial"
   | otherwise = all isAllowedChar xs
